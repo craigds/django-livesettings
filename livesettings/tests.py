@@ -558,8 +558,7 @@ class PermissionTest(TestCase):
         user1.save()
         user2 = User.objects.create_user('developer', 'fred@example.com', 'secret')
         user2.is_staff = True
-        user2.user_permissions.add(Permission.objects.get(codename='change_setting', 
-                content_type=ContentType.objects.get(app_label='livesettings', model='setting'), codename='change_setting'))
+        user2.user_permissions.add(Permission.objects.get(codename='change_setting', content_type=ContentType.objects.get(app_label='livesettings', model='setting')))
         user2.save()
 
         keyedcache.cache_delete()
