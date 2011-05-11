@@ -42,15 +42,10 @@ class SortedDotDict(SortedDict):
             raise AttributeError, key
 
     def __iter__(self):
+        # craigds - WTF? iter(mydict) usually iterates over keys, for some reason we're iterating over values??
         vals = self.values()
         for k in vals:
             yield k
-
-    def values(self):
-        vals = super(SortedDotDict, self).values()
-        vals = [v for v in vals if isinstance(v, (ConfigurationGroup, Value))]
-        vals.sort()
-        return vals
 
 class ConfigurationGroup(SortedDotDict):
     """A simple wrapper for a group of configuration values"""
