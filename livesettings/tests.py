@@ -78,7 +78,7 @@ class ConfigurationTestSettings(TestCase):
         self.assert_(c.update(20))
         self.assertEqual(c.value, 20)
         try:
-            s = c.setting
+            c.setting
         except SettingNotSet:
             self.fail("Should have a setting now")
 
@@ -87,7 +87,7 @@ class ConfigurationTestSettings(TestCase):
         self.assertEqual(c.value, 10)
 
         try:
-            s = c.setting
+            c.setting
             self.fail('Should throw SettingNotSet')
         except SettingNotSet:
             pass
@@ -100,7 +100,7 @@ class ConfigTestDotAccess(TestCase):
 
         g = ConfigurationGroup('test3','test3')
         self.g = g
-        c1 = config_register(BooleanValue(g, 's1', default=True))
+        config_register(BooleanValue(g, 's1', default=True))
         c2 = config_register(IntegerValue(g, 's2', default=10))
         c2.update(100)
 
@@ -483,8 +483,8 @@ class LongSettingTest(TestCase):
         self.wide.update('woot')
 
         try:
-            q = LongSetting.objects.get(pk = remember)
-            self.fail("Should be deletec")
+            LongSetting.objects.get(pk = remember)
+            self.fail("Should be deleted")
         except LongSetting.DoesNotExist:
             pass
 
@@ -551,8 +551,7 @@ class PermissionTest(TestCase):
     def setUp(self):
         from django.contrib.auth.models import Permission, User
         from django.contrib.contenttypes.models import ContentType
-
-        opts = Setting._meta
+        
         user1 = User.objects.create_user('warehouseman', 'john@example.com', 'secret')
         user1.is_staff = True
         user1.save()

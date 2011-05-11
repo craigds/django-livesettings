@@ -173,7 +173,7 @@ def config_collect_values(group, groupkey, key, unique=True, skip_missing=True):
     for g in groups:
         try:
             ret.append(config_value(g, key))
-        except KeyError, ke:
+        except KeyError:
             if not skip_missing:
                 raise SettingNotSet('No config %s.%s' % (g, key))
 
@@ -215,7 +215,7 @@ def config_value_safe(group, key, default_value):
         raw = config_value(group, key)
     except SettingNotSet:
         pass
-    except ImportError, e:
+    except ImportError:
         log.warn("Error getting %s.%s, OK if you are in SyncDB.", group, key)
 
     return raw

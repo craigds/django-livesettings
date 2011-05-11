@@ -4,7 +4,6 @@ for settings retrieval.
 
 from django.conf import settings as djangosettings
 from django.contrib.sites.models import Site
-import logging
 
 __all__ = ['get_overrides']
 

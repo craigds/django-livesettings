@@ -285,7 +285,7 @@ class Value(object):
             try:
                 val = self.setting.value
 
-            except SettingNotSet, sns:
+            except SettingNotSet:
                 is_setting_initializing = False
                 if self.use_default:
                     val = self.default
