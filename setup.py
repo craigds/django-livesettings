@@ -28,6 +28,5 @@ setup(
                    'Programming Language :: Python',
                    'Framework :: Django'],
     packages = ['livesettings', 'livesettings.templatetags'],
-    setup_requires=["setuptools_hg"],
     include_package_data = True,
 )
