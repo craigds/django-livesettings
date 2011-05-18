@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext
 from livesettings import values
-from livesettings.models import SettingNotSet
+from livesettings.exceptions import SettingNotSet
 from livesettings.utils import is_string_like
 
 import logging

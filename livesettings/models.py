@@ -4,6 +4,7 @@ from django.db import models, connection, DatabaseError
 from django.db.models import loading
 from django.utils.translation import ugettext_lazy as _
 from livesettings.caching import cache_key, cache_get, cache_set, NotCachedError, CachedObjectMixin
+from livesettings.exceptions import SettingNotSet
 from livesettings.overrides import get_overrides
 import logging
 
@@ -78,12 +79,6 @@ def find_setting(group, key, site=None):
         raise SettingNotSet(key, cachekey=ck)
 
     return setting
-
-class SettingNotSet(Exception):    
-    def __init__(self, k, cachekey=None):
-        self.key = k
-        self.cachekey = cachekey
-        self.args = [self.key, self.cachekey]
 
 class SettingManager(models.Manager):
     def get_query_set(self):

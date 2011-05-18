@@ -3,6 +3,7 @@ from django.contrib.sites.models import Site
 from django.core import urlresolvers
 from livesettings import config_value
 from livesettings.utils import url_join
+from livesettings.exceptions import SettingNotSet
 import logging
 
 log = logging.getLogger('configuration.config_tags')
@@ -54,7 +55,7 @@ def config_boolean(option):
     args = option.split('.')
     try:
         val = config_value(*args)
-    except:
+    except SettingNotSet:
         log.warn('config_boolean tag: Tried to look up config setting "%s", got SettingNotSet, returning False', option)
         val = False
     if val:
