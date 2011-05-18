@@ -6,10 +6,9 @@ def can_loop_over(maybe):
     """Test value to see if it is list like"""
     try:
         iter(maybe)
-    except:
-        return 0
-    else:
-        return 1
+    except TypeError:
+        return False
+    return True
 
 def is_list_or_tuple(maybe):
     return isinstance(maybe, (types.TupleType, types.ListType))
@@ -24,9 +23,8 @@ def is_string_like(maybe):
     try:
         maybe+""
     except TypeError:
-        return 0
-    else:
-        return 1
+        return False
+    return True
 
 
 def flatten_list(sequence, scalarp=is_scalar, result=None):
