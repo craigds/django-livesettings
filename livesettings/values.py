@@ -2,7 +2,7 @@
 
 http://code.google.com/p/django-values/
 """
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from django import forms
 from django.core.exceptions import ImproperlyConfigured
 from django.db import connection, DatabaseError
@@ -25,7 +25,7 @@ __all__ = ['BASE_GROUP', 'ConfigurationGroup', 'Value', 'BooleanValue', 'Decimal
 _WARN = {}
 try:
     is_setting_initializing
-except:
+except NameError:
     is_setting_initializing = True  # until the first success find "livesettings_setting" table, by any thread
 
 
@@ -45,7 +45,7 @@ class SortedDotDict(SortedDict):
     def __getattr__(self, key):
         try:
             return self[key]
-        except:
+        except KeyError:
             raise AttributeError, key
 
     def __iter__(self):
@@ -425,9 +425,10 @@ class DecimalValue(Value):
             def clean(self, value):
                 value = super(forms.DecimalField, self).clean(value)
                 try:
-                    return unicode(Decimal(value))
-                except:
+                    value = Decimal(value)
+                except (TypeError, InvalidOperation):
                     raise forms.ValidationError('This value must be a decimal number.')
+                return unicode(value)
 
     def to_python(self, value):
         if value==NOTSET:
@@ -526,7 +527,7 @@ class PercentValue(Value):
             value = super(forms.DecimalField, self).clean(value)
             try:
                 value = Decimal(value)
-            except:
+            except (TypeError, InvalidOperation):
                 raise forms.ValidationError('This value must be a decimal number.')
             return unicode(Decimal(value)/100)
         
@@ -534,9 +535,11 @@ class PercentValue(Value):
             def render(self, name, value, attrs=None):
                 # Place a percent sign after a smaller text field
                 try:
-                    value = unicode("%.2f" % (Decimal(value)*100))
-                except:
+                    value = Decimal(value)
+                except TypeError:
                     value = "N/A"
+                else:
+                    value = unicode("%.2f" % (value*100))
                 attrs['size'] = attrs['max_length'] = 6
                 return mark_safe(super(forms.TextInput, self).render(name, value, attrs) + '%')
 
@@ -650,12 +653,11 @@ class MultipleStringValue(Value):
         else:
             try:
                 return simplejson.loads(value)
-            except:
+            except (simplejson.JSONDecodeError, TypeError):
                 if is_string_like(value):
                     return [value]
                 else:
-                    log.warning('Could not decode returning empty list: %s', value)
-                    return []
+                    raise ValueError("Could not decode value: %r" % value)
 
 
     to_editor = to_python

@@ -12,6 +12,8 @@ def _safe_get_siteid(site):
         try:
             site = Site.objects.get_current()
             siteid = site.id
+        
+        # FIXME: why the catchall except? What could be thrown here?
         except:
             siteid = djangosettings.SITE_ID
     else:

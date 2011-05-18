@@ -14,7 +14,7 @@ __all__ = ['SettingNotSet', 'Setting', 'LongSetting', 'find_setting']
 
 try:
     is_site_initializing
-except:
+except NameError:
     is_site_initializing = True  # until the first success find "django_site" table, by any thread
     is_first_warn = True
 
