@@ -72,7 +72,9 @@ class ConfigurationSettings(object):
 
         def groups(self):
             """Return ordered list"""
-            return self.settings.values()
+            values = self.settings.values()
+            values.sort()
+            return values
 
         def has_config(self, group, key):
             if isinstance(group, values.ConfigurationGroup):

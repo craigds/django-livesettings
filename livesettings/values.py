@@ -34,7 +34,14 @@ log = logging.getLogger('configuration')
 NOTSET = object()
 
 class SortedDotDict(SortedDict):
-
+    """
+    A dictionary that keeps its keys in the order in which they're inserted.
+    
+    Additionally, getattr just delegates to getitem, meaning you can do:
+    
+        sd = SortedDotDict(somedict)
+        sd.foo == sd['foo']
+    """
     def __getattr__(self, key):
         try:
             return self[key]
@@ -43,9 +50,7 @@ class SortedDotDict(SortedDict):
 
     def __iter__(self):
         # craigds - WTF? iter(mydict) usually iterates over keys, for some reason we're iterating over values??
-        vals = self.values()
-        for k in vals:
-            yield k
+        return iter(self.values())
 
 class ConfigurationGroup(SortedDotDict):
     """A simple wrapper for a group of configuration values"""
