@@ -99,8 +99,8 @@ class ConfigTestDotAccess(TestCase):
         c2.update(100)
 
     def testDotAccess(self):
-        self.assert_(ConfigurationSettings().test3.s1.value)
-        self.assertEqual(ConfigurationSettings().test3.s2.value, 100)
+        self.assert_(configuration_settings.test3.s1.value)
+        self.assertEqual(configuration_settings.test3.s2.value, 100)
 
     def testSettingProperty(self):
         c = config_get('test3','s2')
@@ -146,7 +146,7 @@ class ConfigTestSortOrder(TestCase):
         self.g3c3 = config_register(IntegerValue(g3, 'c3'))
 
     def testGroupOrdering(self):
-        mgr = ConfigurationSettings()
+        mgr = configuration_settings
         self.assertEqual(mgr[2].key, self.g1.key)
         self.assertEqual(mgr[1].key, self.g2.key)
         self.assertEqual(mgr[0].key, self.g3.key)

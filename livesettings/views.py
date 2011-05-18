@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import permission_required
 from django.views.decorators.cache import never_cache
-from livesettings import ConfigurationSettings, forms
+from livesettings import configuration_settings, forms
 from livesettings.overrides import get_overrides
 import django
 import logging
@@ -19,7 +19,7 @@ def group_settings(request, group, template='livesettings/group_settings.html'):
 
     use_db, overrides = get_overrides();
 
-    mgr = ConfigurationSettings()
+    mgr = configuration_settings
     if group is None:
         settings = mgr
         title = 'Site settings'
