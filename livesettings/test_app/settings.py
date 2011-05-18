@@ -80,7 +80,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sitemaps',
     'livesettings',
-    'keyedcache',
     'test_app.localsite',
 )
 
@@ -92,6 +91,8 @@ DEBUG_TOOLBAR_CONFIG = {
    'INTERCEPT_REDIRECTS' : False,
 }
 
+CACHE_BACKEND = 'dummy:///'
+LIVESETTINGS_USE_KEYEDCACHE = False
 CACHE_PREFIX = 'T'
 CACHE_TIMEOUT = 300
 DEBUG = True

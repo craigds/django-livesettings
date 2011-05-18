@@ -1,7 +1,6 @@
 from django.conf import settings as djangosettings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-import keyedcache
 from livesettings import *
 import logging
 log = logging.getLogger('test');
@@ -31,8 +30,6 @@ class ConfigurationFunctionTest(TestCase):
 class ConfigurationTestSettings(TestCase):
 
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
         g = ConfigurationGroup('test2','test2')
         self.g = g
         config_register(StringValue(g, 's1'))
@@ -95,9 +92,6 @@ class ConfigurationTestSettings(TestCase):
 
 class ConfigTestDotAccess(TestCase):
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
-
         g = ConfigurationGroup('test3','test3')
         self.g = g
         config_register(BooleanValue(g, 's1', default=True))
@@ -119,9 +113,6 @@ class ConfigTestDotAccess(TestCase):
 
 class ConfigTestModuleValue(TestCase):
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
-
         g = ConfigurationGroup('modules','module test')
         self.g = g
         self.c = config_register(ModuleValue(g, 'test'))
@@ -134,9 +125,6 @@ class ConfigTestModuleValue(TestCase):
 
 class ConfigTestSortOrder(TestCase):
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
-
         g1 = ConfigurationGroup('group1', 'Group 1', ordering=-1001)
         g2 = ConfigurationGroup('group2', 'Group 2', ordering=-1002)
         g3 = ConfigurationGroup('group3', 'Group 3', ordering=-1003)
@@ -167,9 +155,6 @@ class ConfigTestSortOrder(TestCase):
 class TestMultipleValues(TestCase):
 
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
-
         g1 = ConfigurationGroup('m1', 'Multiple Group 1', ordering=1000)
         self.g1 = g1
 
@@ -201,9 +186,6 @@ class TestMultipleValues(TestCase):
 class TestMultipleValuesWithDefault(TestCase):
 
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
-
         g1 = ConfigurationGroup('mv2', 'Multiple Group 2', ordering=1000)
         self.g1 = g1
 
@@ -239,9 +221,6 @@ class ConfigTestChoices(TestCase):
 class ConfigTestRequires(TestCase):
 
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
-
         g1 = ConfigurationGroup('req1', 'Requirements 1', ordering=1000)
 
         self.g1 = g1
@@ -273,9 +252,6 @@ class ConfigTestRequires(TestCase):
 class ConfigTestRequiresChoices(TestCase):
 
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
-
         g1 = ConfigurationGroup('req2', 'Requirements 2', ordering=1000)
 
         self.g1 = g1
@@ -332,9 +308,6 @@ class ConfigTestRequiresChoices(TestCase):
 class ConfigTestRequiresValue(TestCase):
 
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
-
         g1 = ConfigurationGroup('reqval', 'Requirements 3', ordering=1000)
 
         self.g1 = g1
@@ -391,9 +364,6 @@ class ConfigTestRequiresValue(TestCase):
 
 class ConfigTestGroupRequires(TestCase):
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
-
         choices1 = config_register(MultipleStringValue(BASE_GROUP, 'groupchoice', ordering=1))
         choices2 = config_register(MultipleStringValue(BASE_GROUP, 'groupchoice2', ordering=1))
 
@@ -424,7 +394,6 @@ class ConfigTestGroupRequires(TestCase):
 
 class ConfigCollectGroup(TestCase):
     def setUp(self):
-        keyedcache.cache_delete()
         choices = config_register(MultipleStringValue(BASE_GROUP, 'collect', ordering=1))
         self.choices = choices
 
@@ -462,7 +431,6 @@ class ConfigCollectGroup(TestCase):
 
 class LongSettingTest(TestCase):
     def setUp(self):
-        keyedcache.cache_delete()
         wide = config_register(LongStringValue(BASE_GROUP, 'LONG', ordering=1, default="woot"))
         self.wide = wide
         self.wide.update('*' * 1000)
@@ -491,9 +459,6 @@ class LongSettingTest(TestCase):
 class OverrideTest(TestCase):
     """Test settings overrides"""
     def setUp(self):
-        # clear out cache from previous runs
-        keyedcache.cache_delete()
-
         djangosettings.LIVESETTINGS_OPTIONS = {
             1 : {
                 'DB' : False,
@@ -560,7 +525,6 @@ class PermissionTest(TestCase):
         user2.user_permissions.add(Permission.objects.get(codename='change_setting', content_type=ContentType.objects.get(app_label='livesettings', model='setting')))
         user2.save()
 
-        keyedcache.cache_delete()
         value = IntegerValue(BASE_GROUP, 'SingleItem')
         config_register(value)
 

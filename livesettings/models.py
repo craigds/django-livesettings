@@ -3,8 +3,7 @@ from django.contrib.sites.models import Site
 from django.db import models, connection, DatabaseError
 from django.db.models import loading
 from django.utils.translation import ugettext_lazy as _
-from keyedcache import cache_key, cache_get, cache_set, NotCachedError
-from keyedcache.models import CachedObjectMixin
+from livesettings.caching import cache_key, cache_get, cache_set, NotCachedError, CachedObjectMixin
 from livesettings.overrides import get_overrides
 import logging
 
