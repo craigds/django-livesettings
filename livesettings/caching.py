@@ -29,6 +29,7 @@ else:
         val = cache.get(key)
         if val is None:
             raise NotCachedError(key)
+        return val
     
     def cache_set(key, value):
         cache.set(key, value, getattr(settings, 'CACHE_TIMEOUT', 300))
