@@ -27,6 +27,6 @@ setup(
                    'Operating System :: OS Independent',
                    'Programming Language :: Python',
                    'Framework :: Django'],
-    packages = ['livesettings', 'livesettings.templatetags'],
+    packages = ['livesettings', 'livesettings.templatetags', 'livesettings.migrations'],
     include_package_data = True,
 )
