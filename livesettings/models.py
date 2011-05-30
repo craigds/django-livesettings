@@ -60,8 +60,8 @@ def find_setting(group, key, site=None):
 
                 except Setting.DoesNotExist:
                     pass
-            
-                cache_set(ck, value=setting)
+                else:
+                    setting.cache_set()
 
     else:
         grp = overrides.get(group, None)
@@ -91,7 +91,7 @@ class ImmutableSetting(object):
         self.value = value
         
     def cache_key(self, *args, **kwargs):
-        return cache_key('OverrideSetting', self.site, self.group, self.key)
+        return cache_key('OverrideSetting', self.site_id, self.group, self.key)
         
     def delete(self):
         pass
@@ -115,7 +115,7 @@ class Setting(models.Model, CachedObjectMixin):
         return self.id is not None
 
     def cache_key(self, *args, **kwargs):
-        return cache_key('Setting', self.site, self.group, self.key)
+        return cache_key('Setting', self.site_id, self.group, self.key)
 
     def delete(self):
         self.cache_delete()
