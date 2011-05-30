@@ -429,33 +429,6 @@ class ConfigCollectGroup(TestCase):
 
         self.assertEqual(v, ['set a', 'set d'])
 
-class LongSettingTest(TestCase):
-    def setUp(self):
-        wide = config_register(LongStringValue(BASE_GROUP, 'LONG', ordering=1, default="woot"))
-        self.wide = wide
-        self.wide.update('*' * 1000)
-
-    def testLongStorage(self):
-        w = config_value('BASE', 'LONG')
-        self.assertEqual(len(w), 1000)
-        self.assertEqual(w, '*'*1000)
-
-    def testShortInLong(self):
-        self.wide.update("test")
-        w = config_value('BASE', 'LONG')
-        self.assertEqual(len(w), 4)
-        self.assertEqual(w, 'test')
-
-    def testDelete(self):
-        remember = self.wide.setting.id
-        self.wide.update('woot')
-
-        try:
-            LongSetting.objects.get(pk = remember)
-            self.fail("Should be deleted")
-        except LongSetting.DoesNotExist:
-            pass
-
 class OverrideTest(TestCase):
     """Test settings overrides"""
     def setUp(self):

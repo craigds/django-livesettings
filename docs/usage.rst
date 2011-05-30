@@ -79,8 +79,6 @@ In order to give non-superusers access to the settings, make sure to use the dja
 .. Note::
     Superusers will have access to this setting without enabling any specific permissions
 
-Permissions for insert, delete or permission for longsetting are ignored and only the above-mentioned permission is used.
-
 Exporting Settings
 ------------------
 

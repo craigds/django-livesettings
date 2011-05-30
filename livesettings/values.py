@@ -11,7 +11,7 @@ from django.utils.datastructures import SortedDict
 from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext, ugettext_lazy as _
-from livesettings.models import find_setting, LongSetting, Setting, SettingNotSet
+from livesettings.models import find_setting, Setting, SettingNotSet
 from livesettings.overrides import get_overrides
 from livesettings.utils import load_module, is_string_like, is_list_or_tuple
 import datetime
@@ -609,24 +609,12 @@ class PasswordValue(StringValue):
                 return ''
         return new_value
 
-class LongStringValue(Value):
-
+class LongStringValue(StringValue):
     class field(forms.CharField):
         def __init__(self, *args, **kwargs):
             kwargs['required'] = False
             kwargs['widget'] = forms.Textarea()
             forms.CharField.__init__(self, *args, **kwargs)
-
-    def make_setting(self, db_value):
-        log.debug('new long setting %s.%s', self.group.key, self.key)
-        return LongSetting(group=self.group.key, key=self.key, value=db_value)
-
-    def to_python(self, value):
-        if value == NOTSET:
-            value = ""
-        return unicode(value)
-
-    to_editor = to_python
 
 class MultipleStringValue(Value):
 
@@ -663,9 +651,10 @@ class MultipleStringValue(Value):
     to_editor = to_python
 
 class LongMultipleStringValue(MultipleStringValue):
-    def make_setting(self, db_value):
-        log.debug('new long setting %s.%s', self.group.key, self.key)
-        return LongSetting(group=self.group.key, key=self.key, value=db_value)
+    """
+    Exists for backwards compatibility only
+    """
+    pass
 
 class ModuleValue(Value):
     """Handles setting modules, storing them as strings in the db."""

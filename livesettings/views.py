@@ -71,14 +71,11 @@ def site_settings(request):
 def export_as_python(request):
     """Export site settings as a dictionary of dictionaries"""
 
-    from livesettings.models import Setting, LongSetting
+    from livesettings.models import Setting
     import pprint
 
     work = {}
-    both = list(Setting.objects.all())
-    both.extend(list(LongSetting.objects.all()))
-
-    for s in both:
+    for s in Setting.objects.all():
         sitesettings = work.setdefault(s.site.id, {'DB': False, 'SETTINGS':{}})['SETTINGS']
         sitegroup = sitesettings.setdefault(s.group, {})
         sitegroup[s.key] = s.value
